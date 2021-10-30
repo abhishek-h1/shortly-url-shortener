@@ -87,6 +87,24 @@ app.post('/shortUrls',  (req, res)=>{
   res.redirect('/');
 });
 
+
+app.get('/:code', async(req, res)=>{
+  sUrl.findOne({shortUrl:req.params.code}, (err, found)=>{
+    if(found)
+    {
+      found.clicks++;
+      found.save();
+
+      res.redirect(found.longUrl);
+    }
+    else {
+      return res.sendStatus(404);
+    }
+
+  });
+});
+
+
 app.listen(PORT, ()=>{
   console.log(`Server started on port ${PORT}`);
 })
